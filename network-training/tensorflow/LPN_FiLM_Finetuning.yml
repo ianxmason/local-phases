@@ -1,0 +1,68 @@
+data_path: "<path/to/TFRecords>"
+stats_path: "<path/to/mean/and/std>"
+
+save_path: "<path/to/save/finetuned/model>"
+model_name: "HandsInPockets_"
+# "Roadrunner_", "Skip_", "Star_", "WildArms_"
+
+ft_model_path: "<saved/pretrained/model/path>"  # When finetuning training
+# ft_model_path: "<output/finetuned/model/path>"  # When saving binary of finetuned
+
+ft_batch_size: "batch_size_ph:0"
+ft_mode: "mode_ph:0"
+ft_clip_seed: "clip_seed_ph:0"
+ft_frame_seed: "frame_seed_ph:0"
+ft_clip_handle: "Clips/clip_handle_ph:0"
+ft_frame_handle: "Frames/frame_handle_ph:0"
+FiLM_ft_weights: ["FiLM_Generator/conv1d/kernel:0", "FiLM_Generator/conv1d/bias:0", "FiLM_Generator/conv1d_1/kernel:0",
+                "FiLM_Generator/conv1d_1/bias:0", "FiLM_Generator/dense/kernel:0", "FiLM_Generator/dense/bias:0",
+                "FiLM_Generator/Final_Dense_Layer/kernel:0", "FiLM_Generator/Final_Dense_Layer/bias:0"] 
+GT_weights: ["Gating/wc0_w:0", "Gating/wc0_b:0", "Gating/wc1_w:0", "Gating/wc1_b:0", "Gating/wc2_w:0", "Gating/wc2_b:0"]  
+EP_weights: ["LPN/layer0alpha:0", "LPN/layer0beta:0", "LPN/layer1alpha:0", "LPN/layer1beta:0", "LPN/layer2alpha:0", "LPN/layer2beta:0"]  
+
+
+Xdim: 348  # trajectory, position, velocity, rotations (not phase and gait)
+Ydim: 342  # trajectory, position, velocity, rotations, local phases, local phase updates,  foot contacts 
+Pdim: 8  # Num local/global phase variables, can be 0, 1, 8
+clip_size: 240
+learning_rate: 0.0001
+batch_size: 32
+num_epochs: 100
+num_bones: 25
+
+# frame_vel: True  # Use velocity features in input and output frame?
+# clip_vel: True  # Use velocity features in input clip?
+# frame_gait: 0  # Number of gait labels used in TFRecords (can set to 0 if have none)
+one_hot_dim: 0  # num one hot labels to include, max 100
+use_clip_trajectory : False
+
+num_bones: 25
+parents: [-1,0,1,2,3,4,5,4,7,8, 9,10, 4,12,13,14,15, 0,17,18,19, 0,21,22,23]  # encodes skeletal structure
+       # [0, 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24] 
+
+num_experts: 8
+gating_indices: [348, 349, 350, 351, 352, 353, 354, 355]  # local phases
+
+
+styles_list: ["HandsInPockets"]
+# styles_list: ["Roadrunner"]
+# styles_list: ["Skip"]
+# styles_list: ["Star"]
+# styles_list: ["WildArms"]
+
+styles_list_ft: ["Aeroplane", "Akimbo", "Angry", "ArmsAboveHead", "ArmsBehindBack", "ArmsBySide", "ArmsFolded", "Balance",
+                "BeatChest", "BentForward", "BentKnees", "BigSteps", "BouncyLeft", "BouncyRight", "Cat", "Chicken",
+                "CrossOver", "Crouched", "CrowdAvoidance", "Depressed", "Dinosaur", "DragLeftLeg", "DragRightLeg",
+                "Drunk", "DuckFoot", "Elated", "FairySteps", "Flapping", "FlickLegs", "Followed", "GracefulArms", "HandsBetweenLegs",
+                "Heavyset", "HighKnees", "InTheDark", "KarateChop", "Kick", "LawnMower", "LeanBack",
+                "LeanLeft", "LeanRight", "LeftHop", "LegsApart", "LimpLeft", "LimpRight", "LookUp", "Lunge",
+                "March", "Monk", "Morris", "Neutral", "Old", "OnHeels", "OnPhoneLeft", "OnPhoneRight", "OnToesBentForward",
+                "OnToesCrouched", "PendulumHands", "Penguin", "PigeonToed", "Proud", "Punch", "Quail", "RaisedLeftArm",
+                "RaisedRightArm", "RightHop", "Robot", "Rocket", "Rushed", "ShieldedLeft", "ShieldedRight",
+                "SlideFeet", "SpinAntiClock", "SpinClock", "StartStop", "Stiff", "Strutting", "Superman",
+                "Swat", "Sweep", "Swimming", "SwingArmsRound", "SwingShoulders", "Teapot", "Tiptoe", "TogetherStep",
+                "TwoFootJump", "WalkingStickLeft", "WalkingStickRight", "Waving", "WhirlArms", "WideLegs", "WiggleHips",
+                "WildLegs", "Zombie"]  # 95 Styles
+
+tf_seed: 34567  # 23456
+
